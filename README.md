@@ -22,3 +22,9 @@ It's definition is given by the function ``relu``.
 The Swish function, as proposed by by Ramachandran et al. on their paper "Searching for Activation 
 Functions" ([arXiv:1710.05941v2](https://arxiv.org/abs/1710.05941)).
 The implementation is given by the ``swish`` function.
+
+### Continuously Differentiable Exponential Linear Units 
+
+CELU function as proposed by Barron on his paper "Continuously Differentiable Exponential Linear
+Units" ([arXiv:1704.07483](https://arxiv.org/abs/1704.07483)).
+The implementation is given by the ``celu`` function.

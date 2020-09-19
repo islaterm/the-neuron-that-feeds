@@ -31,6 +31,16 @@ def swish(t: Tensor, beta: float) -> Tensor:
     return tensor * sig(beta_tensor * tensor)
 
 
-def celu(t: Tensor, ) -> Tensor:
+def celu(t: Tensor, alpha: float) -> Tensor:
+    """ Continuously Differentiable Exponential Linear Units function as proposed by Barron on his
+        paper "Continuously Differentiable Exponential Linear Units" (arXiv:1704.07483).
+        The CELU function of a tensor T is:
+            - T[i] when T[i] >= 0
+            - alpha * (exp(T[i] / alpha) - 1)
+        for each element i of the tensor T.
+    """
     tensor = t if torch.is_tensor(t) else torch.tensor(t)
-    return tensor
+    zero_tensor = torch.zeros_like(tensor)
+    alpha_tensor = torch.full_like(tensor, alpha)
+    return torch.max(zero_tensor, tensor) + torch.min(zero_tensor, alpha_tensor * (
+                torch.exp(tensor / alpha_tensor) - torch.full_like(tensor, 1)))
