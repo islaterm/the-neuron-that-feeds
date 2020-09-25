@@ -1,6 +1,8 @@
 import torch
 from torch import Tensor
 
+from autocorrect import corrector, token
+
 
 def sig(t: Tensor) -> Tensor:
     return torch.reciprocal(1 + torch.exp(-1 * t))
@@ -43,4 +45,29 @@ def celu(t: Tensor, alpha: float) -> Tensor:
     zero_tensor = torch.zeros_like(tensor)
     alpha_tensor = torch.full_like(tensor, alpha)
     return torch.max(zero_tensor, tensor) + torch.min(zero_tensor, alpha_tensor * (
-                torch.exp(tensor / alpha_tensor) - torch.full_like(tensor, 1)))
+            torch.exp(tensor / alpha_tensor) - torch.full_like(tensor, 1)))
+
+
+def softmax(t: Tensor, dim: int, estable=True) -> Tensor:
+    """ Softmax function.
+        The function stabilizes the values of a sequence of real values by generating a new
+        sequence: S = exp(X) / sum(exp(*X)).
+    """
+    tensor = t if torch.is_tensor(t) else torch.tensor(t)
+    # tensor_dim =
+    print(dim)
+    dim_max = torch.max(tensor, dim=dim)
+    print(dim_max)
+    return tensor  # Temporary return value
+
+
+if __name__ == '__main__':
+    test_relu = corrector.get_test_data(homework=1, question="1a", test=1, token=token)
+    test_swish, swish_par = corrector.get_test_data(homework=1, question="1a", test=2, token=token)
+    test_celu, celu_par = corrector.get_test_data(homework=1, question="1a", test=3, token=token)
+
+    corrector.sumbit(homework=1, question="1a", test=1, token=token, answer=relu(test_relu))
+    corrector.sumbit(homework=1, question="1a", test=2, token=token,
+                     answer=swish(test_swish, swish_par))
+    corrector.sumbit(homework=1, question="1a", test=3, token=token,
+                     answer=celu(test_celu, celu_par))
