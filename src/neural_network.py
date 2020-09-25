@@ -1,14 +1,15 @@
 from typing import Callable, List, Optional
 
 import torch
-from torch import nn
+from torch import Tensor, nn
+from torch.nn import Module, Parameter, ParameterList
 
 from activation_functions import relu, sig
 
 ActivationFunction = Callable[[torch.Tensor, Optional[float]], torch.Tensor]
 
 
-class FFNN(nn.Module):
+class FFNN(Module):
     """ Implementation of a Feed Forward Neural Network (FFNN).
 
         :param size_in:
@@ -29,19 +30,27 @@ class FFNN(nn.Module):
         neurons = [size_in]
         neurons.extend(hidden_sizes)
         neurons.append(size_out)
-        self.__weights = nn.ParameterList(
-            [nn.Parameter(torch.rand(neurons[i], neurons[i + 1])) for i in
-             range(0, len(neurons) - 1)])
-        self.__biases = nn.ParameterList(
-            [nn.Parameter(torch.rand(layer_size, 0)) for layer_size in hidden_sizes])
+        self.__weights = ParameterList(
+            [Parameter(torch.rand(neurons[i], neurons[i + 1])) for i in range(0, len(neurons) - 1)])
+        self.__biases = ParameterList(
+            [Parameter(torch.rand(layer_size, 0)) for layer_size in hidden_sizes])
 
     @property
     def weights(self):
         return self.__weights.parameters()
 
+    @weights.setter
+    def weights(self, nn_weights: List[Tensor]):
+        self.__weights = ParameterList(
+            [nn.Parameter(layer_weights) for layer_weights in nn_weights])
+
     @property
     def biases(self):
         return self.__biases.parameters()
+
+    @biases.setter
+    def biases(self, nn_biases: List[Tensor]):
+        self.__biases = ParameterList([Parameter(layer_biases) for layer_biases in nn_biases])
 
 
 if __name__ == '__main__':
