@@ -34,6 +34,31 @@ class FFNN(Module):
             [Parameter(torch.rand(neurons[i], neurons[i + 1])) for i in range(0, len(neurons) - 1)])
         self.__biases = ParameterList(
             [Parameter(torch.rand(layer_size, 0)) for layer_size in hidden_sizes])
+        self.__activation_functions = activation_functions
+
+    def print_weights(self) -> None:
+        """
+        Prints a summary of the weights of this network.
+        """
+        print("Weights:")
+        for layer, weight in enumerate(self.weights):
+            print(f"\tLayer {layer}: {weight.size()}")
+
+    def print_biases(self) -> None:
+        """
+        Prints a summary of the biases of this network.
+        """
+        print("Biases:")
+        for layer, bias in enumerate(self.biases):
+            print(f"\tLayer {layer}: {bias.size()}")
+
+    def print_activation_functions(self):
+        """
+        Prints a summary of the biases of this network.
+        """
+        print("Activation functions:")
+        for layer, fun in enumerate(self.activation_functions):
+            print(f"\tLayer {layer}: {fun.__name__}")
 
     @property
     def weights(self):
@@ -52,8 +77,17 @@ class FFNN(Module):
     def biases(self, nn_biases: List[Tensor]):
         self.__biases = ParameterList([Parameter(layer_biases) for layer_biases in nn_biases])
 
+    @property
+    def activation_functions(self):
+        return self.__activation_functions
+
+    @activation_functions.setter
+    def activation_functions(self, nn_functions: List[Tensor]):
+        self.__activation_functions = nn_functions
+
 
 if __name__ == '__main__':
-    red_neuronal = FFNN(300, [50, 30], [relu, sig], 10)
-    for w in red_neuronal.biases:
-        print(w)
+    network = FFNN(300, [50, 30], [relu, sig], 10)
+    network.print_weights()
+    network.print_biases()
+    network.print_activation_functions()
