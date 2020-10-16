@@ -55,10 +55,11 @@ def softmax(t: Tensor, dim: int, estable=True) -> Tensor:
     """
     tensor = t if torch.is_tensor(t) else torch.tensor(t)
     # tensor_dim =
-    print(dim)
-    dim_max = torch.max(tensor, dim=dim)
-    print(dim_max)
-    return tensor  # Temporary return value
+    # print(dim)
+    # dim_max = torch.max(tensor, dim=dim)
+    # print(dim_max)
+    from torch.nn import Softmax
+    return Softmax(dim=dim)(t)  # Temporary return value
 
 
 if __name__ == '__main__':

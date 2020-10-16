@@ -1,1 +1,5 @@
 torch~=1.6.0
+torchvision~=0.7.0
+cc6204~=0.2.2
+matplotlib~=3.3.2
+numpy~=1.19.2
